@@ -1,11 +1,13 @@
 {
   "name": "leadsync",
   "version": "1.0.0",
-  "type":"module",
+  "type": "module",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "node --env-file=.env --watch main.js --input=companies.csv --clean=clean_data.csv --report=report.json"
+    "dev": "node --env-file=.env --watch main.js --input=companies.csv --clean=clean_data.csv --report=report.json",
+    "test": "vitest"
+
   },
   "keywords": [],
   "author": "",
@@ -13,6 +15,8 @@
   "dependencies": {
     "csv-parse": "^5.6.0",
     "papaparse": "^5.5.1",
+    "validator": "^13.12.0",
+    "vitest": "^3.0.4",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
