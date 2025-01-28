@@ -1,10 +1,11 @@
 {
   "name": "leadsync",
   "version": "1.0.0",
+  "type":"module",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "node --env-file=.env --watch main.js --input=companies.csv --output=report.json"
+    "dev": "node --env-file=.env --watch main.js --input=companies.csv --clean=clean_data.csv --report=report.json"
   },
   "keywords": [],
   "author": "",
