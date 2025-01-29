@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { readCSV, writeCSV } from "./lib/io.js";
 import * as v from "./lib/validate.js";
 

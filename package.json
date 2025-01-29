@@ -2,16 +2,18 @@
   "name": "csvguard",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "CSV validating tool",
   "main": "main.js",
   "scripts": {
-    "dev": "node --env-file=.env --watch main.js --input=companies.csv --clean=clean_data.csv --report=report.json",
+    "dev": "node --watch main.js --input=companies.csv --clean=final.csv --report=errors.csv",
     "test": "vitest"
-
+  },
+  "bin": {
+    "csvgauard": "./main.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "csv-parse": "^5.6.0",
     "papaparse": "^5.5.1",
