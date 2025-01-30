@@ -1,68 +1,39 @@
 #!/usr/bin/env node
-
+import { intro, outro, log, spinner } from "@clack/prompts";
+import core from "./lib/core.js";
+import prompt from "./lib/prompt.js";
 import { readCSV, writeCSV } from "./lib/io.js";
-import * as v from "./lib/validate.js";
 
-console.log(v.isEmail("hey@gmail.com"));
+async function main() {
+  intro(`Lead Sync App start your csv validation`);
 
-// Handling CLI Arguments
-import yargs from "yargs/yargs";
-import { hideBin } from "yargs/helpers";
-const argv = yargs(hideBin(process.argv)).argv;
+  const { input, clean:cleanFile, errors: errorsFile } = await prompt();
 
-function validateAndClean(records) {
-  const clean = [];
-  const errors = [];
-  const companies = new Set();
+  const s = spinner();
 
-  for (let record of records) {
-    const recordError = [];
-    // Validate company name
-    if (!v.isCompanyName(record["Company Name"])) {
-      recordError.push("Company name is not valid");
-    } else if (companies.has(record["Company Name"])) {
-      recordError.push("Company name is not unique");
-    } else {
-      companies.add(record["Company Name"]);
-    }
+  log.success(input);
+  log.success(cleanFile);
+  log.success(errorsFile);
 
-    // Validate linkedin url
-    if (!v.isLinkedInURL(record["LinkedIn Profile URL"])) {
-      recordError.push("LinkedIn url is not valid");
-    }
+  s.start("Reading the file");
 
-    // Validate employee size
-    if (!v.isEmployeeSize(record["Employee Size"])) {
-      recordError.push("Employee size is not valid");
-    }
+  const csvData = readCSV(input);
+  const [clean, errors] = core(csvData.body);
 
-    // Validate website url
-    if (!v.isURL(record["Website URL"])) {
-      recordError.push("Website URL is not valid");
-    }
+  log.success("Validation rules complete");
 
-    if (!recordError.length) {
-      clean.push(record);
-    } else {
-      errors.push({ ...record, errors: recordError });
-    }
-  }
+  s.start("Creating new files");
 
-  return [clean, errors];
+  // Generate clean csv
+  writeCSV(cleanFile, clean);
+  log.success("Write to clean done");
+
+  // Generate report
+  writeCSV(errorsFile, errors);
+  log.success("Generated report successfully!");
+
+  s.stop();
+  outro("You're done!");
 }
 
-function main() {
-  const csvData = readCSV(argv.input);
-  const [clean, errors] = validateAndClean(csvData.body);
-  console.log("Validation rules complete");
-
-
-  writeCSV(argv.clean, clean);
-  console.log("Write to clean done");
-
-
-  writeCSV(argv.report, errors);
-  console.log("Generated report successfully!");
-}
-
-main();
+await main();
