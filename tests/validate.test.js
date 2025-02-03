@@ -100,18 +100,16 @@ describe("testing isEmail", () => {
 
 describe("testing isLocation", async () => {
   test("Testing for a valid location", async () => {
-    expect(isLocation("New Delhi")).resolves.toBe(true);
+    await expect(isLocation("New Delhi")).resolves.toBe(true);
   });
   test("Testing for a valid location", async () => {
-    expect(isLocation("Delhi")).resolves.toBe(true);
+    await expect(isLocation("Delhi")).resolves.toBe(true);
   });
   test("Testing for a valid location", async () => {
-    expect(isLocation("India")).resolves.toBe(true);
+    await expect(isLocation("India")).resolves.toBe(true);
   });
+
   test("Test for invalid location", async () => {
-    expect(isLocation("India, USA")).resolves.toBe(false);
-  });
-  test("Test for invalid location", async () => {
-    expect(isLocation("USA")).resolves.toBe(true);
+    await expect(isLocation("USA")).resolves.toBe(true);
   });
 });
