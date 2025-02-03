@@ -1,9 +1,10 @@
 import { describe, expect, test } from "vitest";
 import {
   isEmail,
-  isLinkedinURL,
+  isLinkedInURL,
   isCompanyName,
   isEmployeeSize,
+  isLocation,
 } from "../lib/validate.js";
 
 describe("Testing isEmail", () => {
@@ -22,19 +23,19 @@ describe("Testing isEmail", () => {
 
 describe("Testing isLinkedinURL", () => {
   test("testing for a valid linkedin url", () => {
-    expect(isLinkedinURL("https://in.linkedin.com/company/google")).toBe(true);
+    expect(isLinkedInURL("https://in.linkedin.com/company/google")).toBe(true);
   });
 
   test("testing for an invalid linkedin url", () => {
-    expect(isLinkedinURL("https://in.linked.com/company/facebook")).toBe(false);
+    expect(isLinkedInURL("https://in.linked.com/company/facebook")).toBe(false);
   });
 
   test("testing without http part for incorrect spelling", () => {
-    expect(isLinkedinURL("www.linked.com/qualitysoftech")).toBe(false);
+    expect(isLinkedInURL("www.linked.com/qualitysoftech")).toBe(false);
   });
 
   test("testing for valid linkedin without http", () => {
-    expect(isLinkedinURL("www.linkedin.com")).toBe(true);
+    expect(isLinkedInURL("www.linkedin.com")).toBe(true);
   });
 });
 
@@ -79,5 +80,38 @@ describe("Testing isEmployeeSize", () => {
 
   test("testing for potential employee-size entry", () => {
     expect(isEmployeeSize("100-100k")).toBe(false);
+  });
+});
+
+describe("testing isEmail", () => {
+  test("Testing for a valid email", () => {
+    expect(isEmail("contact@mail.com")).toBe(true);
+  });
+  test("Testing for a valid email", () => {
+    expect(isEmail("contact123@mail.com")).toBe(true);
+  });
+  // test("Testing NA", () => {
+  //   expect(isEmail("NA")).toBe(true);
+  // });//TODO: DO IT LATER
+  test("Testing for an invalid email", () => {
+    expect(isEmail("hey@phone@book.com")).toBe(false);
+  });
+});
+
+describe("testing isLocation", async () => {
+  test("Testing for a valid location", async () => {
+    expect(isLocation("New Delhi")).resolves.toBe(true);
+  });
+  test("Testing for a valid location", async () => {
+    expect(isLocation("Delhi")).resolves.toBe(true);
+  });
+  test("Testing for a valid location", async () => {
+    expect(isLocation("India")).resolves.toBe(true);
+  });
+  test("Test for invalid location", async () => {
+    expect(isLocation("India, USA")).resolves.toBe(false);
+  });
+  test("Test for invalid location", async () => {
+    expect(isLocation("USA")).resolves.toBe(true);
   });
 });

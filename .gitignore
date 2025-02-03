@@ -1,6 +1,9 @@
 companies.csv
 final.csv
 errors.csv
+/drive
+
+*.csv
 
 # Logs
 logs
