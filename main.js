@@ -17,6 +17,8 @@ async function main() {
     headers,
   } = await prompt();
 
+  console.log(headers);
+
   // const s = spinner();
 
   log.success(input);
