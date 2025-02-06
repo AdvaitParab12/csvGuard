@@ -9,6 +9,9 @@
         "start": "node main.js",
         "test": "vitest"
     },
+    "bin":{
+        "csvguard": "./main.js"
+    },
     "keywords": [
         "csv",
         "guard",
