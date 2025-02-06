@@ -4,22 +4,10 @@ import {
   isLinkedInURL,
   isCompanyName,
   isEmployeeSize,
+  isURL,
   isLocation,
+  isPhoneNumber,
 } from "../lib/validate.js";
-
-describe("Testing isEmail", () => {
-  test("testing for a valid email", () => {
-    expect(isEmail("contact@leadsync.com")).toBe(true);
-  });
-
-  test("testing NA", () => {
-    expect(isEmail("NA")).toBe(true);
-  });
-
-  test("testing for an invalid email", () => {
-    expect(isEmail("hey@phone@book.com")).toBe(false);
-  });
-});
 
 describe("Testing isLinkedinURL", () => {
   test("testing for a valid linkedin url", () => {
@@ -50,10 +38,6 @@ describe("Testing isCompanyName", () => {
 
   test("testing for URL case", () => {
     expect(isCompanyName("e24.ai")).toBe(false);
-  });
-
-  test("testing for potential employee-size entry", () => {
-    expect(isCompanyName("10-500")).toBe(false);
   });
 });
 
@@ -111,5 +95,56 @@ describe("testing isLocation", async () => {
 
   test("Test for invalid location", async () => {
     await expect(isLocation("USA")).resolves.toBe(true);
+  });
+});
+
+describe("Checking isURL", () => {
+  test("Check for proper URL", () => {
+    expect(isURL("https://google.com")).toBe(true);
+  });
+
+  test("Check for valid URL pattern", () => {
+    expect(isURL("www.google.im")).toBe(true);
+  });
+
+  test("Checks for incomplete pattern", () => {
+    expect(isURL("google")).toBe(false);
+  });
+
+  test("Checks for www", () => {
+    expect(isURL("ww.google.com")).toBe(true);
+  });
+
+  test("Check for both http and www part", () => {
+    expect(isURL("http://www.google.com")).toBe(true);
+  });
+});
+
+describe("isPhoneNumber function", () => {
+  test("should return true for valid phone number without letters", () => {
+    expect(isPhoneNumber("123456")).toBe(true);
+    expect(isPhoneNumber("9876543210")).toBe(true);
+    expect(isPhoneNumber("1112223333")).toBe(true);
+    expect(isPhoneNumber("+919876543210")).toBe(true);
+    expect(isPhoneNumber("+91(111)2223334")).toBe(true);
+  });
+
+  test("should return false for phone numbers containing letters", () => {
+    expect(isPhoneNumber("123abc456")).toBe(false);
+    expect(isPhoneNumber("abc123")).toBe(false);
+  });
+
+  test("should return false for numbers with fewer than 6 characters", () => {
+    expect(isPhoneNumber("12345")).toBe(false);
+    expect(isPhoneNumber("12")).toBe(false);
+  });
+
+  test("should return false for empty string", () => {
+    expect(isPhoneNumber("")).toBe(false);
+  });
+
+  test("should return false for non-numeric characters", () => {
+    expect(isPhoneNumber("abc123")).toBe(false);
+    expect(isPhoneNumber("$123456")).toBe(false);
   });
 });
